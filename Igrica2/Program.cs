@@ -5,13 +5,60 @@ namespace Igrica2
 {
     class Player
     {
+        //Constructor
+        public Player()
+        {
+            Weapon woodenSword = new Weapon("Wooden sword", 4, 2, 10);
+            Armor woodenArmor = new Armor("Wooden plank", 10, 4, 20);
+
+            fInventory().fBag().Add(woodenSword);
+            fEquip(woodenSword);
+
+            fInventory().fBag().Add(woodenArmor);
+            fEquip(woodenArmor);
+        }
+        
+        //Functions
         public void fInputName()
         {
             Console.WriteLine("Upisite svoje ime:");
             name = Console.ReadLine();
         }
+        
+        public void fListStats()
+        {
+            Console.WriteLine("\nName: \t{0}\nGold: \t{1}\nDamage: {2}\nArmor: \t{3}\n", name, gold, damage, armor);
+        }
+
+        //Weapon
+        public void fEquip(Weapon weapon)
+        {
+            fInventory().fEquipWeapon(weapon);
+            damage += weapon.fGetDamage();
+        }
+        public void fUnEquip(Weapon weapon)
+        {
+            fInventory().fUnEquipWeapon(weapon);
+            damage -= weapon.fGetDamage();
+        }
+
+        //Armor
+        public void fEquip(Armor armor)
+        {
+            fInventory().fEquipArmor(armor);
+            this.armor += armor.fGetArmor();
+        }
+        public void fUnEquip(Armor armor)
+        {
+            fInventory().fUnEquipArmor(armor);
+            this.armor -= armor.fGetArmor();
+        }
+
+        //Accessor
+        public Inventory fInventory() { return inventory; }
+
         string name;
-        int gold = 250;
+        int gold = 150;
         int armor = 0;
         int damage = 0;
         Inventory inventory = new Inventory();
@@ -22,8 +69,9 @@ namespace Igrica2
         //Functions
         public void fListItems()
         {
+            Console.WriteLine("Na prodavacevom izlogu:");
             for (int i = 0; i < vendor.Count; i++)
-                Console.Write(i + ". " + vendor[i].fGetName() +" | type: " + vendor[i].GetType() + " | Buy: " + vendor[i].fGetBuyValue() + "\n");
+                Console.Write(i + ". " + "\t" + vendor[i].fGetName() + "\t" + " | type: " + vendor[i].GetType().Name + "\t" + " | Buy: " + vendor[i].fGetBuyValue() + "\n");
             Console.WriteLine();
         }
 
@@ -40,8 +88,9 @@ namespace Igrica2
         //Functions
         public void fListItems()
         {
+            Console.WriteLine("U tvojoj torbi:");
             for (int i = 0; i < bag.Count; i++)
-                Console.Write(i + ". " + bag[i].fGetName() + " | type: " + bag[i].GetType() + " | Buy: " + bag[i].fGetBuyValue() + "\n");
+                Console.Write(i + ". " + "\t" + bag[i].fGetName() + "\t" + " | type: " + bag[i].GetType().Name + "\t" + " | Sell: " + bag[i].fGetSellValue() + "\t" + "\n");
             Console.WriteLine();
         }
 
@@ -84,6 +133,8 @@ namespace Igrica2
                 Console.WriteLine("Trenutno niste opremljeni s {0}", armor.fGetName());
         }
 
+        //Accessor
+        public List<Item> fBag() { return bag; }
 
         List<Item> bag = new List<Item>();
         List<Weapon> weaponSlot = new List<Weapon>();
@@ -150,6 +201,8 @@ namespace Igrica2
         {
             Player player = new Player();
             player.fInputName();
+            player.fListStats();
+            player.fInventory().fListItems();
 
             Weapon axe = new Weapon("Axe", 8, 10, 50);
             Weapon sword = new Weapon("Sword", 6, 5, 35);
