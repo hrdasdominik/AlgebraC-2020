@@ -17,7 +17,7 @@ namespace Igrica2
             fInventory().fBag().Add(woodenArmor);
             fEquip(woodenArmor);
         }
-        
+
         //Functions
         public void fInputName()
         {
@@ -289,6 +289,7 @@ namespace Igrica2
             {
                 player.fSetGold(player.fGetGold() + player.fInventory().fBag()[number].fGetSellValue());
                 player.fInventory().fRemoveItem(player.fInventory().fBag()[number]);
+                Console.WriteLine("\nUspiješno ste prodali {0} artikl.", player.fInventory().fBag()[number].fGetName());
             }
             else
             {
