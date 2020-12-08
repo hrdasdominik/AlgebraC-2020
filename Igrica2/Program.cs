@@ -287,9 +287,10 @@ namespace Igrica2
         {
             if (number < player.fInventory().fBag().Count)
             {
+                Console.WriteLine("\nUspiješno ste prodali {0} artikl.", player.fInventory().fBag()[number].fGetName());
                 player.fSetGold(player.fGetGold() + player.fInventory().fBag()[number].fGetSellValue());
                 player.fInventory().fRemoveItem(player.fInventory().fBag()[number]);
-                Console.WriteLine("\nUspiješno ste prodali {0} artikl.", player.fInventory().fBag()[number].fGetName());
+                
             }
             else
             {
