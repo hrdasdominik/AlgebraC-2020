@@ -8,8 +8,8 @@ namespace Igrica2
         //Constructor
         public Player()
         {
-            Weapon woodenSword = new Weapon("Wooden sword", 4, 2, 10);
-            Armor woodenArmor = new Armor("Wooden plank", 10, 4, 20);
+            Weapon woodenSword = new Weapon("wooden sword", 4, 2, 10);
+            Armor woodenArmor = new Armor("wooden plank", 10, 4, 20);
 
             fInventory().fBag().Add(woodenSword);
             fEquip(woodenSword);
@@ -27,7 +27,7 @@ namespace Igrica2
         
         public void fListStats()
         {
-            Console.WriteLine("\nName: \t{0}\nGold: \t{1}\nDamage: {2}\nArmor: \t{3}\n", name, gold, damage, armor);
+            Console.WriteLine("\nName: \t{0}\nGold: \t{1}\nDamage: {2}\nArmor: \t{3}", name, gold, damage, armor);
         }
 
         //Weapon
@@ -55,7 +55,11 @@ namespace Igrica2
         }
 
         //Accessor
+        public int fGetGold() { return gold; }
         public Inventory fInventory() { return inventory; }
+
+        //Modifier
+        public void fSetGold(int gold) { this.gold = gold; }
 
         string name;
         int gold = 150;
@@ -66,10 +70,23 @@ namespace Igrica2
 
     class Vendor
     {
+        public Vendor()
+        {
+            Weapon axe = new Weapon("axe", 8, 10, 50);
+            Weapon sword = new Weapon("sword", 6, 5, 35);
+
+            Armor plate = new Armor("plate", 18, 25, 100);
+            Armor leather = new Armor("leather", 14, 8, 40);
+
+            fAddItem(axe);
+            fAddItem(sword);
+            fAddItem(plate);
+            fAddItem(leather);
+        }
         //Functions
         public void fListItems()
         {
-            Console.WriteLine("Na prodavacevom izlogu:");
+            Console.WriteLine("\nNa prodavacevom izlogu:");
             for (int i = 0; i < vendor.Count; i++)
                 Console.Write(i + ". " + "\t" + vendor[i].fGetName() + "\t" + " | type: " + vendor[i].GetType().Name + "\t" + " | Buy: " + vendor[i].fGetBuyValue() + "\n");
             Console.WriteLine();
@@ -80,6 +97,9 @@ namespace Igrica2
             vendor.Add(item);
         }
 
+        //Accessor
+        public List<Item> fGetVendor() { return vendor; }
+
         List<Item> vendor = new List<Item>();
     }
 
@@ -88,15 +108,26 @@ namespace Igrica2
         //Functions
         public void fListItems()
         {
-            Console.WriteLine("U tvojoj torbi:");
-            for (int i = 0; i < bag.Count; i++)
-                Console.Write(i + ". " + "\t" + bag[i].fGetName() + "\t" + " | type: " + bag[i].GetType().Name + "\t" + " | Sell: " + bag[i].fGetSellValue() + "\t" + "\n");
-            Console.WriteLine();
+            if (bag.Count != 0)
+            {
+                Console.WriteLine("\nU tvojoj torbi:");
+                for (int i = 0; i < bag.Count; i++)
+                    Console.Write(i + ". " + "\t" + bag[i].fGetName() + " | type: " + bag[i].GetType().Name + " | Sell: " + bag[i].fGetSellValue() + "\t" + "\n");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("\nU tvojoj torbi se nalazi prašina.");
+            }
         }
 
         public void fAddItem(Item item)
         {
             bag.Add(item);
+        }
+        public void fRemoveItem(Item item)
+        {
+            bag.Remove(item);
         }
 
         //Weapon functions
@@ -106,14 +137,14 @@ namespace Igrica2
             if (weaponSlot.Count <= weaponLimit)
                 weaponSlot.Add(weapon);
             else
-                Console.WriteLine("Nemate dovoljno ruku za novo oružje. :P");
+                Console.WriteLine("\nNemate dovoljno ruku za novo oružje.");
         }
         public void fUnEquipWeapon(Weapon weapon)
         {
             if (weaponSlot.Contains(weapon))
                 weaponSlot.Remove(weapon);
             else
-                Console.WriteLine("Trenutno ne držite u rukama {0}", weapon.fGetName());
+                Console.WriteLine("\nTrenutno ne držite u rukama {0}.", weapon.fGetName());
         }
 
         //Armor functions
@@ -123,14 +154,14 @@ namespace Igrica2
             if (armorSlot.Count < armorLimit)
                 armorSlot.Add(armor);
             else
-                Console.WriteLine("Već imate na sebi oklop.");
+                Console.WriteLine("\nVeć imate na sebi oklop.");
         }
         public void fUnEquipArmor(Armor armor)
         {
             if (armorSlot.Contains(armor))
                 armorSlot.Remove(armor);
             else
-                Console.WriteLine("Trenutno niste opremljeni s {0}", armor.fGetName());
+                Console.WriteLine("\nTrenutno niste opremljeni s {0}", armor.fGetName());
         }
 
         //Accessor
@@ -195,28 +226,164 @@ namespace Igrica2
         int armor;
     }
 
+    class Logic
+    {
+        public Logic()
+        {
+            player.fInputName();
+            player.fListStats();
+        }
+
+        //Functions
+        public void fGiveItem(string name)
+        {
+            int count = 1;
+            for (int i = 0; i < vendor.fGetVendor().Count; i++)
+            {
+                if (vendor.fGetVendor()[i].fGetName() == name)
+                {
+                    if (player.fGetGold() >= vendor.fGetVendor()[i].fGetBuyValue())
+                    {
+                        player.fSetGold(player.fGetGold() - vendor.fGetVendor()[i].fGetBuyValue());
+                        player.fInventory().fAddItem(vendor.fGetVendor()[i]);
+                        Console.WriteLine("\nUspiješno ste kupili {0} artikl", vendor.fGetVendor()[i].fGetName());
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nNemas dovoljno novčića.");
+                    }
+                }
+                else
+                    count++;
+            }
+            if (count > vendor.fGetVendor().Count)
+            {
+                Console.WriteLine("\nArtikal nije pronađen.\nPokušajte ponovno.");
+            }
+        }
+
+        public void fGiveItem(int number)
+        {
+            if (number < vendor.fGetVendor().Count)
+            {
+                if (player.fGetGold() >= vendor.fGetVendor()[number].fGetBuyValue())
+                {
+                    player.fSetGold(player.fGetGold() - vendor.fGetVendor()[number].fGetBuyValue());
+                    player.fInventory().fAddItem(vendor.fGetVendor()[number]);
+                    Console.WriteLine("\nUspiješno ste kupili {0} artikl.", vendor.fGetVendor()[number].fGetName());
+                }
+                else
+                {
+                    Console.WriteLine("\nNemas dovoljno novčića.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nArtikal nije pronađen.\nPokušajte ponovno.");
+            }
+        }
+
+        public void fTakeItem(int number)
+        {
+            if (number < player.fInventory().fBag().Count)
+            {
+                player.fSetGold(player.fGetGold() + player.fInventory().fBag()[number].fGetSellValue());
+                player.fInventory().fRemoveItem(player.fInventory().fBag()[number]);
+            }
+            else
+            {
+                Console.WriteLine("\nNije pronađen artikl.");
+            }
+        }
+
+        //Market functions
+        public void fBuyItem()
+        {
+            vendor.fListItems();
+            Console.WriteLine("\nKoji artikal bi voljeli kupiti?");
+            string choice = Console.ReadLine();
+            choice.ToLower();
+            int number;
+            if(Int32.TryParse(choice, out number))
+            {
+                fGiveItem(number);
+            }
+            else
+            { 
+                fGiveItem(choice);
+            }
+        }
+
+        public void fSellItem()
+        {
+            if (player.fInventory().fBag().Count != 0)
+            {
+                player.fInventory().fListItems();
+                Console.WriteLine("\nKoji artikal bi voljeli prodati?");
+                string choice = Console.ReadLine();
+                int number;
+                if (Int32.TryParse(choice, out number))
+                {
+                    fTakeItem(number);
+                }
+                else
+                {
+                    Console.WriteLine("\nNije pronađen artikl.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nU tvojoj torbi se nalazi prašina.");
+            }
+        }
+
+        //Action
+        public void fAction()
+        {
+            Console.WriteLine("\nŠto bi voljeli učiniti?");
+            Console.WriteLine("1. Kupi artikl\n2. Prodaj artikl\n3. Prolistaj inventar\n4. Provjeri svoj status\n5. Izlaz iz prodavaonice");
+            string izbor = Console.ReadLine();
+            int choice;
+            bool success = Int32.TryParse(izbor, out choice);
+            if(success)
+            {
+                switch (choice)
+                {
+                    case 1:
+                        fBuyItem();
+                        break;
+                    case 2:
+                        fSellItem();
+                        break;
+                    case 3:
+                        player.fInventory().fListItems();
+                        break;
+                    case 4:
+                        player.fListStats();
+                        break;
+                    case 5:
+                        gameIsRunning = false;
+                        break;
+                }
+            }
+            
+        }
+
+        Player player = new Player();
+        Vendor vendor = new Vendor();
+
+        public bool gameIsRunning = true;
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Player player = new Player();
-            player.fInputName();
-            player.fListStats();
-            player.fInventory().fListItems();
-
-            Weapon axe = new Weapon("Axe", 8, 10, 50);
-            Weapon sword = new Weapon("Sword", 6, 5, 35);
-
-            Armor plate = new Armor("Plate", 18, 25, 100);
-            Armor leather = new Armor("Leather", 14, 8, 40);
-            
-            Vendor vendor = new Vendor();
-            vendor.fAddItem(axe);
-            vendor.fAddItem(sword);
-            vendor.fAddItem(plate);
-            vendor.fAddItem(leather);
-
-            vendor.fListItems();
+            Logic logic = new Logic();
+            while (logic.gameIsRunning == true)
+            {
+                logic.fAction();
+            }
         }
     }
 }
