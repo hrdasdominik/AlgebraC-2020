@@ -27,7 +27,7 @@ namespace Igrica2
         
         public void fListStats()
         {
-            Console.WriteLine("\nName: \t{0}\nGold: \t{1}\nDamage: {2}\nArmor: \t{3}", name, gold, damage, armor);
+            Console.WriteLine("\nName: {0}\nGold: {1}", name, gold);
         }
 
         //Weapon
@@ -362,9 +362,14 @@ namespace Igrica2
                         player.fListStats();
                         break;
                     case 5:
+                        Console.WriteLine("Izašali ste iz prodavaonice.");
                         gameIsRunning = false;
                         break;
                 }
+            }
+            else
+            {
+                Console.WriteLine("\nMolim unesite broj da odaberete opciju!");
             }
             
         }
