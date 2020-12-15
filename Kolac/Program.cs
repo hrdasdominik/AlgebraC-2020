@@ -11,7 +11,17 @@ namespace Kolac
         }
 
         //Dodavanje sastojka u listu
-        public void DodajSastojak(string imeSastojka, int gramaza) { sastojci.Add(imeSastojka); sastojci.Add(gramaza); }
+        public void DodajSastojak(string imeSastojka, int gramaza) 
+        { 
+            if(ispecen != true)
+            { 
+                sastojci.Add(imeSastojka); sastojci.Add(gramaza);
+            }
+            else
+            {
+                Console.WriteLine("Kolac je ispecen, nemozete nadodati novi sastojak.\n");
+            }
+        }
 
         //Accessor
         public bool Ispecen() { return ispecen; }
@@ -80,14 +90,8 @@ namespace Kolac
             Console.WriteLine("Ime kolaca: {0}", K2.Ime());
             Rerna.Ispeci(ref K2);
 
-            if (K1.Ispecen() != true)
-            {
-                K1.DodajSastojak("Limun", 100);
-            }
-            else
-            {
-                Console.WriteLine("Kolac je ispecen, nemozete nadodati novi sastojak.\n");
-            }
+            K1.DodajSastojak("Limun", 100);
+            
             Console.WriteLine("Broj ispecenih kolaca je: {0}", Rerna.BrojIspecenihKolaca());
         }
     }
