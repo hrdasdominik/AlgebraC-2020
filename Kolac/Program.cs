@@ -57,7 +57,6 @@ namespace Kolac
                 }
                 ukupnaGramaza /= 1000;
                 Console.WriteLine("Ukupna masa kolaca je: {0}kg\n", ukupnaGramaza);
-                K.sastojci.AsReadOnly();
                 brojIspecenihKolaca++;
             }
             else
