@@ -23,8 +23,20 @@ namespace Kolac
         }
 
         //Accessor
+        public string Ime()
+        {
+            return ime;
+        }
+        public bool Ispecen()
+        {
+            return ispecen;
+        }
 
         //Modifier
+        public void Ispecen(bool ispecen)
+        {
+            this.ispecen = ispecen;
+        }
 
         //Variable i liste
         public List<object> sastojci = new List<object>();
