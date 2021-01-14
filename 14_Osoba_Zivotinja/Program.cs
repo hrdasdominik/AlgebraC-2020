@@ -58,12 +58,14 @@ namespace _14_Osoba_Zivotinja
 
             poredakPoPlaci.Sort();
 
+            oso.Dispose();
+
             Console.WriteLine("Ispis comperable nakon sort");
             foreach (var item in poredakPoPlaci)
             {
                 Ispis(item);
             }
-        
+            
 
             Console.ReadKey();
 

@@ -50,14 +50,14 @@ namespace _14_Osoba_Zivotinja
 
         private bool isDisposed = false;
 
-        public void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
 
         {
 
             if (disposing)
 
             {
-
+                Partner.Dispose();
                 // Code to dispose the managed resources of the class
 
             }
@@ -95,7 +95,7 @@ namespace _14_Osoba_Zivotinja
 
             //Koristimo ga za usporedbu 2 objekta.
             //Provjeravamo jesu li isti.
-            return 0;  // 1 ako je veci, -1 ako je manji ili 0 ako su isti
+            // 1 ako je veci, -1 ako je manji ili 0 ako su isti
         }
 
         public int CompareTo(object obj)
