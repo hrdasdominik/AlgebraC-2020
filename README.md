@@ -1,3 +1,12 @@
+#Polozili SQL (24.02.2021)
+- Dominik Hrdas
+- Bruno Riđanec
+- Natasa 
+- Marina
+
+--> nije se pojavio Tin
+
+
 # AlgebraC-2020
 
 neka promjena
@@ -33,6 +42,6 @@ neka promjena
 ##Zadaca za 07.01.2021 (Joker +)
 - Jasmin
 - Ivan Mijatovic
-
+- Filip 
 
 
