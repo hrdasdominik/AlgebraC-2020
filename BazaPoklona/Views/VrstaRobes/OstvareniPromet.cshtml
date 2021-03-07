@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BazaPoklona.Models.VrstaRobe>
+﻿@model IEnumerable<BazaPoklona.Models.Poklon>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,23 +10,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Naziv) 
+                @Html.DisplayNameFor(model => model.Naziv)
             </th>
-            <th></th>
+            <th> 
+                @Html.DisplayNameFor(model => model.VrstaRobe) 
+            </th>
+            <th> 
+                @Html.DisplayNameFor(model => model.Cijena) 
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naziv) <span class="badge badge-secondary">99</span>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Naziv)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VrstaRobe)
+                </td>
+                <td>
+                    <span class="badge badge-secondary">@Html.DisplayFor(modelItem => item.Cijena)</span>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
